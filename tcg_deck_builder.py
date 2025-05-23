@@ -49,8 +49,6 @@ if uploaded_file is not None:
             continue
 
         st.subheader(deck["name"])
-        st.write(f"Author: {deck.get('author', 'Unknown')}")
-        st.write(f"Format: {deck.get('format', 'Unknown')}")
         st.write(f"Deck Type: {deck.get('deck_type', 'Unknown')}")
 
         owned_list = []
