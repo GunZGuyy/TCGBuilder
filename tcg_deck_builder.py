@@ -1,56 +1,60 @@
 import streamlit as st
 import json
+import pandas as pd
 
-st.title("TCG Deck Builder Helper")
-
-# Load cached decks JSON
+# Load cached decks from JSON file (adjust path if needed)
 @st.cache_data
 def load_decks():
-    with open("cached_mtgo_decks.json", "r") as f:
+    with open("cached_mtgo_decks.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 decks = load_decks()
 
-# Select TCG
-tcg_options = sorted(set(deck["tcg"] for deck in decks))
-selected_tcg = st.selectbox("Select your TCG", ["Any"] + tcg_options)
+# Extract TCG options from decks (assuming decks have a 'tcg' key, fallback if not)
+# For this example, let's assume all decks are Magic: The Gathering
+tcg_options = ["Magic: The Gathering", "Yu-Gi-Oh!"]
+selected_tcg = st.selectbox("Select TCG", tcg_options)
 
-# Select deck type
-deck_types = sorted(set(deck["deck_type"] for deck in decks if (selected_tcg == "Any" or deck["tcg"] == selected_tcg)))
-selected_deck_type = st.selectbox("Select deck type", ["Any"] + deck_types)
+st.title("TCG Deck Builder")
 
-# Upload user cards CSV (one card name per line)
-uploaded_file = st.file_uploader("Upload your card list (CSV)")
+uploaded_file = st.file_uploader("Upload your card list CSV", type=["csv"])
 
-if uploaded_file:
-    user_cards = [line.strip() for line in uploaded_file.getvalue().decode("utf-8").splitlines() if line.strip()]
-    st.write(f"You uploaded {len(user_cards)} cards.")
+if uploaded_file is not None:
+    try:
+        # Load card list CSV into a dataframe
+        df = pd.read_csv(uploaded_file)
+        # Expecting the CSV to have a column named 'card' or similar
+        # We'll try to find the first column and treat it as card names:
+        user_cards = df.iloc[:, 0].dropna().astype(str).str.strip().str.lower().tolist()
+        st.write(f"Loaded {len(user_cards)} cards from your list.")
+        
+        # Filter decks by TCG (if your decks have a 'tcg' field; if not, skip this)
+        # For this example, assume all decks are Magic: The Gathering
+        filtered_decks = [deck for deck in decks if selected_tcg == "Magic: The Gathering"]
 
-    # Filter decks by TCG and deck type
-    filtered_decks = decks
-    if selected_tcg != "Any":
-        filtered_decks = [d for d in filtered_decks if d["tcg"] == selected_tcg]
-    if selected_deck_type != "Any":
-        filtered_decks = [d for d in filtered_decks if d["deck_type"] == selected_deck_type]
+        # Score decks by how many cards match user's cards (case insensitive)
+        def deck_match_score(deck):
+            deck_cards = [c.lower() for c in deck["cards"]]
+            return len(set(deck_cards) & set(user_cards))
 
-    # Find decks matching user cards (e.g. at least 30% cards owned)
-    matching_decks = []
-    for deck in filtered_decks:
-        owned = set(deck["cards"]).intersection(user_cards)
-        ratio = len(owned) / len(deck["cards"]) if deck["cards"] else 0
-        if ratio >= 0.3:
-            matching_decks.append((deck, ratio))
-
-    if matching_decks:
-        st.subheader(f"Found {len(matching_decks)} matching decks:")
+        scored_decks = [(deck, deck_match_score(deck)) for deck in filtered_decks]
+        # Keep decks with at least one matching card, sorted by score descending
+        matching_decks = [d for d in scored_decks if d[1] > 0]
         matching_decks.sort(key=lambda x: x[1], reverse=True)
-        for deck, ratio in matching_decks:
-            st.markdown(f"### {deck['name']} ({deck['deck_type']}, {deck['tcg']})")
-            st.markdown(f"**Author:** {deck['author']}")
-            st.markdown(f"**Match:** {ratio:.0%} of deck cards in your collection")
-            st.write("Cards in deck:")
-            st.write(", ".join(deck["cards"]))
-    else:
-        st.write("No matching decks found for your collection with the filters selected.")
+
+        if not matching_decks:
+            st.info("No matching decks found with your cards.")
+        else:
+            st.success(f"Found {len(matching_decks)} decks matching your cards:")
+            for deck, score in matching_decks[:20]:  # limit to top 20 matches
+                st.markdown(f"### {deck['name']} — *{deck.get('deck_type', 'Unknown Type')}*")
+                st.markdown(f"**Author:** {deck.get('author', 'Unknown')}")
+                st.markdown(f"**Format:** {deck.get('format', 'Unknown')}")
+                st.markdown(f"**Matching cards:** {score}")
+                st.write(", ".join(deck["cards"]))
+                st.markdown("---")
+    except Exception as e:
+        st.error(f"Failed to process your file: {e}")
+
 else:
-    st.write("Please upload your card list CSV file.")
+    st.info("Please upload a CSV file containing your card list.")
