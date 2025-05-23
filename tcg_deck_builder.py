@@ -51,7 +51,14 @@ if uploaded_file is not None:
                 st.markdown(f"**Author:** {deck.get('author', 'Unknown')}")
                 st.markdown(f"**Format:** {deck.get('format', 'Unknown')}")
                 st.markdown(f"**Matching cards:** {score}")
-                st.write(", ".join(deck["cards"]))
+                # Color-code cards: green if owned, red if missing
+                colored_cards = []
+                for card in deck["cards"]:
+                    if card.lower() in user_cards:
+                        colored_cards.append(f'<span style="color: green">{card}</span>')
+                    else:
+                        colored_cards.append(f'<span style="color: red">{card}</span>')
+                st.markdown(", ".join(colored_cards), unsafe_allow_html=True)
                 st.markdown("---")
     except Exception as e:
         st.error(f"Failed to process your file: {e}")
