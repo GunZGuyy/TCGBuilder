@@ -1,398 +1,398 @@
 [
-  {
-    "name": "Mono Red Aggro",
-    "author": "ProPlayer1",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Shock",
-      "Fervent Champion",
-      "Anax, Hardened in the Forge",
-      "Torbran, Thane of Red Fell",
-      "Light Up the Stage",
-      "Embercleave",
-      "Bonecrusher Giant",
-      "Rimrock Knight",
-      "Skewer the Critics",
-      "Claim the Firstborn"
-    ]
-  },
-  {
-    "name": "Esper Control",
-    "author": "TopControlDeck",
-    "format": "Standard",
-    "deck_type": "Control",
-    "cards": [
-      "Teferi, Hero of Dominaria",
-      "Dovin's Veto",
-      "Absorb",
-      "Shark Typhoon",
-      "Narset, Parter of Veils",
-      "Omen of the Sea",
-      "Saw It Coming",
-      "Dream Trawler",
-      "Elspeth Conquers Death",
-      "Banishing Light"
-    ]
-  },
-  {
-    "name": "Sultai Midrange",
-    "author": "MetaPlayer",
-    "format": "Standard",
-    "deck_type": "Midrange",
-    "cards": [
-      "Uro, Titan of Nature's Wrath",
-      "Murderous Rider",
-      "Nissa, Who Shakes the World",
-      "Mystical Dispute",
-      "Scavenging Ooze",
-      "Thoughtseize",
-      "Hydroid Krasis",
-      "Kroxa, Titan of Death's Hunger",
-      "Bloodchief's Thirst",
-      "Deathsprout"
-    ]
-  },
-  {
-    "name": "Orzhov Clerics",
-    "author": "AggroFan",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Luminarch Aspirant",
-      "Venerable Knight",
-      "Skyclave Apparition",
-      "Elite Spellbinder",
-      "Clarion Spirit",
-      "Elite Guardmage",
-      "Legion's Landing",
-      "Death Baron",
-      "Castle Locthwain",
-      "Murderous Rider"
-    ]
-  },
-  {
-    "name": "Azorius Flyers",
-    "author": "SkyMaster",
-    "format": "Standard",
-    "deck_type": "Control",
-    "cards": [
-      "Brazen Borrower",
-      "Ranger Class",
-      "Teferi, Hero of Dominaria",
-      "Shark Typhoon",
-      "Deputy of Detention",
-      "Fae of Wishes",
-      "Spell Queller",
-      "Narset, Parter of Veils",
-      "Omen of the Sea",
-      "Seal Away"
-    ]
-  },
-  {
-    "name": "Gruul Aggro",
-    "author": "RedGreenPlayer",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Questing Beast",
-      "Scavenging Ooze",
-      "Lovestruck Beast",
-      "Gruul Spellbreaker",
-      "Domri, Anarch of Bolas",
-      "Embercleave",
-      "Bonecrusher Giant",
-      "Skarrgan Hellkite",
-      "Pelt Collector",
-      "Rhythm of the Wild"
-    ]
-  },
-  {
-    "name": "Dimir Control",
-    "author": "ShadowMage",
-    "format": "Standard",
-    "deck_type": "Control",
-    "cards": [
-      "Thoughtseize",
-      "Fatal Push",
-      "Ruin Crab",
-      "Drown in the Loch",
-      "Dream Eater",
-      "Narset, Parter of Veils",
-      "Shark Typhoon",
-      "Omen of the Sea",
-      "Counterspell",
-      "Bloodchief's Thirst"
-    ]
-  },
-  {
-    "name": "Izzet Spells",
-    "author": "SpellCaster",
-    "format": "Standard",
-    "deck_type": "Combo",
-    "cards": [
-      "Arclight Phoenix",
-      "Expressive Iteration",
-      "Thing in the Ice",
-      "Shark Typhoon",
-      "Lightning Bolt",
-      "Opt",
-      "Expansion // Explosion",
-      "Young Pyromancer",
-      "Manamorphose",
-      "Serum Visions"
-    ]
-  },
-  {
-    "name": "Bant Midrange",
-    "author": "GreenBluePlayer",
-    "format": "Standard",
-    "deck_type": "Midrange",
-    "cards": [
-      "Teferi, Hero of Dominaria",
-      "Knight of Autumn",
-      "Hydroid Krasis",
-      "Shalai, Voice of Plenty",
-      "Scavenging Ooze",
-      "Settle the Wreckage",
-      "Growth Spiral",
-      "Uro, Titan of Nature's Wrath",
-      "Wilderness Reclamation",
-      "Elspeth Conquers Death"
-    ]
-  },
-  {
-    "name": "Rakdos Midrange",
-    "author": "RedBlackPlayer",
-    "format": "Standard",
-    "deck_type": "Midrange",
-    "cards": [
-      "Kroxa, Titan of Death's Hunger",
-      "Claim the Firstborn",
-      "Thoughtseize",
-      "Fatal Push",
-      "Kolaghan's Command",
-      "Blightstep Pathway",
-      "Bonecrusher Giant",
-      "Scorching Dragonfire",
-      "Seasoned Pyromancer",
-      "Bedevil"
-    ]
-  },
-  {
-    "name": "Mono White Aggro",
-    "author": "WhiteKnight",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Luminarch Aspirant",
-      "Dauntless Bodyguard",
-      "Elite Spellbinder",
-      "Selfless Savior",
-      "Skyclave Apparition",
-      "Seasoned Hallowblade",
-      "Adanto Vanguard",
-      "Venerable Knight",
-      "History of Benalia",
-      "Legion's Landing"
-    ]
-  },
-  {
-    "name": "Selesnya Tokens",
-    "author": "TokenMaster",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "March of the Multitudes",
-      "Conclave Tribunal",
-      "Raise the Alarm",
-      "Trostani Discordant",
-      "History of Benalia",
-      "Teysa Karlov",
-      "Venerated Loxodon",
-      "Giant Killer",
-      "Shalai, Voice of Plenty",
-      "Selesnya Guildmage"
-    ]
-  },
-  {
-    "name": "Mono Black Control",
-    "author": "DarkPlayer",
-    "format": "Standard",
-    "deck_type": "Control",
-    "cards": [
-      "Thoughtseize",
-      "Fatal Push",
-      "Murderous Rider",
-      "Castle Locthwain",
-      "Nighthawk Scavenger",
-      "Elspeth Conquers Death",
-      "Rankle, Master of Pranks",
-      "Gifted Aetherborn",
-      "Dark Ritual",
-      "Sign in Blood"
-    ]
-  },
-  {
-    "name": "Jeskai Control",
-    "author": "BlueRedPlayer",
-    "format": "Standard",
-    "deck_type": "Control",
-    "cards": [
-      "Teferi, Hero of Dominaria",
-      "Lightning Helix",
-      "Absorb",
-      "Shark Typhoon",
-      "Narset, Parter of Veils",
-      "Opt",
-      "Supreme Verdict",
-      "Expressive Iteration",
-      "Archmage's Charm",
-      "Detention Sphere"
-    ]
-  },
-  {
-    "name": "Gruul Ramp",
-    "author": "RampMaster",
-    "format": "Standard",
-    "deck_type": "Ramp",
-    "cards": [
-      "Uro, Titan of Nature's Wrath",
-      "Nissa, Who Shakes the World",
-      "Questing Beast",
-      "Scavenging Ooze",
-      "Domri, Anarch of Bolas",
-      "The Great Henge",
-      "Ranging Raptors",
-      "Lovestruck Beast",
-      "Hydroid Krasis",
-      "Kroxa, Titan of Death's Hunger"
-    ]
-  },
-  {
-    "name": "Mono Blue Tempo",
-    "author": "BlueMage",
-    "format": "Standard",
-    "deck_type": "Tempo",
-    "cards": [
-      "Brazen Borrower",
-      "Ragavan, Nimble Pilferer",
-      "Curious Obsession",
-      "Spell Pierce",
-      "Fae of Wishes",
-      "Shark Typhoon",
-      "Unsummon",
-      "Narset, Parter of Veils",
-      "Opt",
-      "Snapcaster Mage"
-    ]
-  },
-  {
-    "name": "Rakdos Sacrifice",
-    "author": "SacrificePlayer",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Mayhem Devil",
-      "Witch's Oven",
-      "Cauldron Familiar",
-      "Claim the Firstborn",
-      "Anax, Hardened in the Forge",
-      "Bloodchief's Thirst",
-      "Seasoned Pyromancer",
-      "Bonecrusher Giant",
-      "Croxa, Titan of Death's Hunger",
-      "Fervent Champion"
-    ]
-  },
-  {
-    "name": "Simic Ramp",
-    "author": "GreenBluePlayer",
-    "format": "Standard",
-    "deck_type": "Ramp",
-    "cards": [
-      "Hydroid Krasis",
-      "Growth Spiral",
-      "Uro, Titan of Nature's Wrath",
-      "Nissa, Who Shakes the World",
-      "Scavenging Ooze",
-      "Nylea's Intervention",
-      "Beast Whisperer",
-      "Risen Reef",
-      "Fabled Passage",
-      "Cultivate"
-    ]
-  },
-  {
-    "name": "Mono Green Stompy",
-    "author": "GreenMaster",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Steel-Leaf Champion",
-      "Pelt Collector",
-      "Aspect of Hydra",
-      "Ranger Class",
-      "Once Upon a Time",
-      "Scavenging Ooze",
-      "Ranging Raptors",
-      "Nissa, Who Shakes the World",
-      "Colossal Might",
-      "Questing Beast"
-    ]
-  },
-  {
-    "name": "Azorius Control",
-    "author": "BlueWhitePlayer",
-    "format": "Standard",
-    "deck_type": "Control",
-    "cards": [
-      "Teferi, Hero of Dominaria",
-      "Supreme Verdict",
-      "Absorb",
-      "Shark Typhoon",
-      "Narset, Parter of Veils",
-      "Omen of the Sea",
-      "Detention Sphere",
-      "Settle the Wreckage",
-      "Archmage's Charm",
-      "Fae of Wishes"
-    ]
-  },
-  {
-    "name": "Dimir Rogues",
-    "author": "RogueMaster",
-    "format": "Standard",
-    "deck_type": "Aggro",
-    "cards": [
-      "Thieves' Guild Enforcer",
-      "Soaring Thought-Thief",
-      "Ruin Crab",
-      "Drown in the Loch",
-      "Rankle, Master of Pranks",
-      "Brazen Borrower",
-      "Foulmire Knight",
-      "Merfolk Windrobber",
-      "Nighthawk Scavenger",
-      "Burglar Rat"
-    ]
-  },
-  {
-    "name": "Orzhov Lifegain",
-    "author": "LifeMaster",
-    "format": "Standard",
-    "deck_type": "Midrange",
-    "cards": [
-      "Ajani's Pridemate",
-      "Vito, Thorn of the Dusk Rose",
-      "Linden, the Steadfast Queen",
-      "Cleric Class",
-      "Castle Locthwain",
-      "Castle Ardenvale",
-      "Murderous Rider",
-      "Soul Warden",
-      "Soul's Attendant",
-      "Legion's Landing"
-    ]
-  },
+    {
+        "name": "Mono Red Aggro",
+        "author": "ProPlayer1",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Shock",
+            "Fervent Champion",
+            "Anax, Hardened in the Forge",
+            "Torbran, Thane of Red Fell",
+            "Light Up the Stage",
+            "Embercleave",
+            "Bonecrusher Giant",
+            "Rimrock Knight",
+            "Skewer the Critics",
+            "Claim the Firstborn"
+        ]
+    },
+    {
+        "name": "Esper Control",
+        "author": "TopControlDeck",
+        "format": "Standard",
+        "deck_type": "Control",
+        "cards": [
+            "Teferi, Hero of Dominaria",
+            "Dovin's Veto",
+            "Absorb",
+            "Shark Typhoon",
+            "Narset, Parter of Veils",
+            "Omen of the Sea",
+            "Saw It Coming",
+            "Dream Trawler",
+            "Elspeth Conquers Death",
+            "Banishing Light"
+        ]
+    },
+    {
+        "name": "Sultai Midrange",
+        "author": "MetaPlayer",
+        "format": "Standard",
+        "deck_type": "Midrange",
+        "cards": [
+            "Uro, Titan of Nature's Wrath",
+            "Murderous Rider",
+            "Nissa, Who Shakes the World",
+            "Mystical Dispute",
+            "Scavenging Ooze",
+            "Thoughtseize",
+            "Hydroid Krasis",
+            "Kroxa, Titan of Death's Hunger",
+            "Bloodchief's Thirst",
+            "Deathsprout"
+        ]
+    },
+    {
+        "name": "Orzhov Clerics",
+        "author": "AggroFan",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Luminarch Aspirant",
+            "Venerable Knight",
+            "Skyclave Apparition",
+            "Elite Spellbinder",
+            "Clarion Spirit",
+            "Elite Guardmage",
+            "Legion's Landing",
+            "Death Baron",
+            "Castle Locthwain",
+            "Murderous Rider"
+        ]
+    },
+    {
+        "name": "Azorius Flyers",
+        "author": "SkyMaster",
+        "format": "Standard",
+        "deck_type": "Control",
+        "cards": [
+            "Brazen Borrower",
+            "Ranger Class",
+            "Teferi, Hero of Dominaria",
+            "Shark Typhoon",
+            "Deputy of Detention",
+            "Fae of Wishes",
+            "Spell Queller",
+            "Narset, Parter of Veils",
+            "Omen of the Sea",
+            "Seal Away"
+        ]
+    },
+    {
+        "name": "Gruul Aggro",
+        "author": "RedGreenPlayer",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Questing Beast",
+            "Scavenging Ooze",
+            "Lovestruck Beast",
+            "Gruul Spellbreaker",
+            "Domri, Anarch of Bolas",
+            "Embercleave",
+            "Bonecrusher Giant",
+            "Skarrgan Hellkite",
+            "Pelt Collector",
+            "Rhythm of the Wild"
+        ]
+    },
+    {
+        "name": "Dimir Control",
+        "author": "ShadowMage",
+        "format": "Standard",
+        "deck_type": "Control",
+        "cards": [
+            "Thoughtseize",
+            "Fatal Push",
+            "Ruin Crab",
+            "Drown in the Loch",
+            "Dream Eater",
+            "Narset, Parter of Veils",
+            "Shark Typhoon",
+            "Omen of the Sea",
+            "Counterspell",
+            "Bloodchief's Thirst"
+        ]
+    },
+    {
+        "name": "Izzet Spells",
+        "author": "SpellCaster",
+        "format": "Standard",
+        "deck_type": "Combo",
+        "cards": [
+            "Arclight Phoenix",
+            "Expressive Iteration",
+            "Thing in the Ice",
+            "Shark Typhoon",
+            "Lightning Bolt",
+            "Opt",
+            "Expansion // Explosion",
+            "Young Pyromancer",
+            "Manamorphose",
+            "Serum Visions"
+        ]
+    },
+    {
+        "name": "Bant Midrange",
+        "author": "GreenBluePlayer",
+        "format": "Standard",
+        "deck_type": "Midrange",
+        "cards": [
+            "Teferi, Hero of Dominaria",
+            "Knight of Autumn",
+            "Hydroid Krasis",
+            "Shalai, Voice of Plenty",
+            "Scavenging Ooze",
+            "Settle the Wreckage",
+            "Growth Spiral",
+            "Uro, Titan of Nature's Wrath",
+            "Wilderness Reclamation",
+            "Elspeth Conquers Death"
+        ]
+    },
+    {
+        "name": "Rakdos Midrange",
+        "author": "RedBlackPlayer",
+        "format": "Standard",
+        "deck_type": "Midrange",
+        "cards": [
+            "Kroxa, Titan of Death's Hunger",
+            "Claim the Firstborn",
+            "Thoughtseize",
+            "Fatal Push",
+            "Kolaghan's Command",
+            "Blightstep Pathway",
+            "Bonecrusher Giant",
+            "Scorching Dragonfire",
+            "Seasoned Pyromancer",
+            "Bedevil"
+        ]
+    },
+    {
+        "name": "Mono White Aggro",
+        "author": "WhiteKnight",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Luminarch Aspirant",
+            "Dauntless Bodyguard",
+            "Elite Spellbinder",
+            "Selfless Savior",
+            "Skyclave Apparition",
+            "Seasoned Hallowblade",
+            "Adanto Vanguard",
+            "Venerable Knight",
+            "History of Benalia",
+            "Legion's Landing"
+        ]
+    },
+    {
+        "name": "Selesnya Tokens",
+        "author": "TokenMaster",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "March of the Multitudes",
+            "Conclave Tribunal",
+            "Raise the Alarm",
+            "Trostani Discordant",
+            "History of Benalia",
+            "Teysa Karlov",
+            "Venerated Loxodon",
+            "Giant Killer",
+            "Shalai, Voice of Plenty",
+            "Selesnya Guildmage"
+        ]
+    },
+    {
+        "name": "Mono Black Control",
+        "author": "DarkPlayer",
+        "format": "Standard",
+        "deck_type": "Control",
+        "cards": [
+            "Thoughtseize",
+            "Fatal Push",
+            "Murderous Rider",
+            "Castle Locthwain",
+            "Nighthawk Scavenger",
+            "Elspeth Conquers Death",
+            "Rankle, Master of Pranks",
+            "Gifted Aetherborn",
+            "Dark Ritual",
+            "Sign in Blood"
+        ]
+    },
+    {
+        "name": "Jeskai Control",
+        "author": "BlueRedPlayer",
+        "format": "Standard",
+        "deck_type": "Control",
+        "cards": [
+            "Teferi, Hero of Dominaria",
+            "Lightning Helix",
+            "Absorb",
+            "Shark Typhoon",
+            "Narset, Parter of Veils",
+            "Opt",
+            "Supreme Verdict",
+            "Expressive Iteration",
+            "Archmage's Charm",
+            "Detention Sphere"
+        ]
+    },
+    {
+        "name": "Gruul Ramp",
+        "author": "RampMaster",
+        "format": "Standard",
+        "deck_type": "Ramp",
+        "cards": [
+            "Uro, Titan of Nature's Wrath",
+            "Nissa, Who Shakes the World",
+            "Questing Beast",
+            "Scavenging Ooze",
+            "Domri, Anarch of Bolas",
+            "The Great Henge",
+            "Ranging Raptors",
+            "Lovestruck Beast",
+            "Hydroid Krasis",
+            "Kroxa, Titan of Death's Hunger"
+        ]
+    },
+    {
+        "name": "Mono Blue Tempo",
+        "author": "BlueMage",
+        "format": "Standard",
+        "deck_type": "Tempo",
+        "cards": [
+            "Brazen Borrower",
+            "Ragavan, Nimble Pilferer",
+            "Curious Obsession",
+            "Spell Pierce",
+            "Fae of Wishes",
+            "Shark Typhoon",
+            "Unsummon",
+            "Narset, Parter of Veils",
+            "Opt",
+            "Snapcaster Mage"
+        ]
+    },
+    {
+        "name": "Rakdos Sacrifice",
+        "author": "SacrificePlayer",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Mayhem Devil",
+            "Witch's Oven",
+            "Cauldron Familiar",
+            "Claim the Firstborn",
+            "Anax, Hardened in the Forge",
+            "Bloodchief's Thirst",
+            "Seasoned Pyromancer",
+            "Bonecrusher Giant",
+            "Croxa, Titan of Death's Hunger",
+            "Fervent Champion"
+        ]
+    },
+    {
+        "name": "Simic Ramp",
+        "author": "GreenBluePlayer",
+        "format": "Standard",
+        "deck_type": "Ramp",
+        "cards": [
+            "Hydroid Krasis",
+            "Growth Spiral",
+            "Uro, Titan of Nature's Wrath",
+            "Nissa, Who Shakes the World",
+            "Scavenging Ooze",
+            "Nylea's Intervention",
+            "Beast Whisperer",
+            "Risen Reef",
+            "Fabled Passage",
+            "Cultivate"
+        ]
+    },
+    {
+        "name": "Mono Green Stompy",
+        "author": "GreenMaster",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Steel-Leaf Champion",
+            "Pelt Collector",
+            "Aspect of Hydra",
+            "Ranger Class",
+            "Once Upon a Time",
+            "Scavenging Ooze",
+            "Ranging Raptors",
+            "Nissa, Who Shakes the World",
+            "Colossal Might",
+            "Questing Beast"
+        ]
+    },
+    {
+        "name": "Azorius Control",
+        "author": "BlueWhitePlayer",
+        "format": "Standard",
+        "deck_type": "Control",
+        "cards": [
+            "Teferi, Hero of Dominaria",
+            "Supreme Verdict",
+            "Absorb",
+            "Shark Typhoon",
+            "Narset, Parter of Veils",
+            "Omen of the Sea",
+            "Detention Sphere",
+            "Settle the Wreckage",
+            "Archmage's Charm",
+            "Fae of Wishes"
+        ]
+    },
+    {
+        "name": "Dimir Rogues",
+        "author": "RogueMaster",
+        "format": "Standard",
+        "deck_type": "Aggro",
+        "cards": [
+            "Thieves' Guild Enforcer",
+            "Soaring Thought-Thief",
+            "Ruin Crab",
+            "Drown in the Loch",
+            "Rankle, Master of Pranks",
+            "Brazen Borrower",
+            "Foulmire Knight",
+            "Merfolk Windrobber",
+            "Nighthawk Scavenger",
+            "Burglar Rat"
+        ]
+    },
+    {
+        "name": "Orzhov Lifegain",
+        "author": "LifeMaster",
+        "format": "Standard",
+        "deck_type": "Midrange",
+        "cards": [
+            "Ajani's Pridemate",
+            "Vito, Thorn of the Dusk Rose",
+            "Linden, the Steadfast Queen",
+            "Cleric Class",
+            "Castle Locthwain",
+            "Castle Ardenvale",
+            "Murderous Rider",
+            "Soul Warden",
+            "Soul's Attendant",
+            "Legion's Landing"
+        ]
+    }
 ]
