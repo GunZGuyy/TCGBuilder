@@ -42,10 +42,15 @@ if uploaded_file is not None:
         deck_cards.update(sideboard)
 
         # Match against normalized card names
-        matching_cards_count = sum(
-            1 for card in deck_cards if owned_counts.get(normalize_card(card), 0) > 0
-        )
-        if matching_cards_count < 5:
+        matching_cards = [
+            card for card in deck_cards if owned_counts.get(normalize_card(card), 0) > 0
+        ]
+        matching_cards_count = len(matching_cards)
+
+        # Debug output
+        st.write(f"🧪 Deck '{deck['name']}' has {matching_cards_count} matching cards.")
+        if matching_cards_count < 1:
+            st.write(f"Skipping '{deck['name']}' — too few matches.")
             continue
 
         st.subheader(deck["name"])
