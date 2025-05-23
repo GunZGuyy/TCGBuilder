@@ -25,43 +25,46 @@ if uploaded_file is not None:
     st.write("### Deck Suggestions:")
 
     for deck in decks:
-        deck_cards = deck.get("cards", {})  # dict of card -> required count
+    deck_cards = deck.get("cards", {})
 
-        # Count how many required cards you have at least one copy of
-        matching_cards_count = sum(
-            1 for card, req_count in deck_cards.items()
-            if owned_counts.get(card, 0) > 0
-        )
-        if matching_cards_count < 5:
-            # Skip decks with very few matching cards (optional)
-            continue
+    if isinstance(deck_cards, list):
+        deck_cards = {card: 1 for card in deck_cards}
+    elif not isinstance(deck_cards, dict):
+        continue  # skip invalid decks
 
-        st.subheader(deck["name"])
-        st.write(f"Author: {deck.get('author','Unknown')}")
-        st.write(f"Format: {deck.get('format','Unknown')}")
-        st.write(f"Deck Type: {deck.get('deck_type','Unknown')}")
+    matching_cards_count = sum(
+        1 for card, req_count in deck_cards.items()
+        if owned_counts.get(card, 0) > 0
+    )
+    if matching_cards_count < 5:
+        continue
 
-        # Prepare lists for owned and missing cards with counts
-        owned_list = []
-        missing_list = []
+    st.subheader(deck["name"])
+    st.write(f"Author: {deck.get('author','Unknown')}")
+    st.write(f"Format: {deck.get('format','Unknown')}")
+    st.write(f"Deck Type: {deck.get('deck_type','Unknown')}")
 
-        for card, req_count in deck_cards.items():
-            owned_qty = owned_counts.get(card, 0)
-            if owned_qty >= req_count:
-                owned_list.append(f"🟢 {card} x{req_count}")
-            elif owned_qty > 0:
-                missing_qty = req_count - owned_qty
-                owned_list.append(f"🟢 {card} x{owned_qty} (partial)")
-                missing_list.append(f"🔴 {card} x{missing_qty}")
-            else:
-                missing_list.append(f"🔴 {card} x{req_count}")
+    owned_list = []
+    missing_list = []
 
-        if owned_list:
-            st.markdown("**Cards you have:**")
-            st.write(", ".join(owned_list))
-        if missing_list:
-            st.markdown("**Cards missing:**")
-            st.write(", ".join(missing_list))
+    for card, req_count in deck_cards.items():
+        owned_qty = owned_counts.get(card, 0)
+        if owned_qty >= req_count:
+            owned_list.append(f"🟢 {card} x{req_count}")
+        elif owned_qty > 0:
+            missing_qty = req_count - owned_qty
+            owned_list.append(f"🟢 {card} x{owned_qty} (partial)")
+            missing_list.append(f"🔴 {card} x{missing_qty}")
+        else:
+            missing_list.append(f"🔴 {card} x{req_count}")
+
+    if owned_list:
+        st.markdown("**Cards you have:**")
+        st.write(", ".join(owned_list))
+    if missing_list:
+        st.markdown("**Cards missing:**")
+        st.write(", ".join(missing_list))
+
 
 else:
     st.info("Upload your card list file to see deck suggestions.")
