@@ -1,164 +1,134 @@
 import streamlit as st
 import pandas as pd
 import requests
-from collections import Counter
+from typing import List
+from functools import lru_cache
 
-TCG_OPTIONS = ["Magic: The Gathering", "Yu-Gi-Oh!"]
-DECK_TYPES = {
-    "Magic: The Gathering": ["Aggro", "Control", "Combo", "Midrange"],
-    "Yu-Gi-Oh!": ["Beatdown", "Control", "Combo"]
-}
-
-# Static example Yu-Gi-Oh! decks with card lists (for demo purposes)
-YUGIOH_DECKS = [
-    {
-        "name": "Dragon Beatdown",
-        "cards": [
-            "Blue-Eyes White Dragon", "Red-Eyes Black Dragon", "Dragon Spirit of White",
-            "Lord of D.", "Dragon Master Knight", "Dragon Ravine", "Return of the Dragon Lords",
-            "Dragon Shrine", "Trade-In", "Monster Reborn"
-        ]
-    },
-    {
-        "name": "Dark Control",
-        "cards": [
-            "Dark Magician", "Dark Magician Girl", "Magician's Rod", "Magician's Navigation",
-            "Dark Magical Circle", "Eternal Soul", "Magicalized Fusion",
-            "Skill Drain", "Mystical Space Typhoon", "Trap Hole"
-        ]
-    },
-    {
-        "name": "Spellcaster Combo",
-        "cards": [
-            "Performapal Skullcrobat Joker", "Pendulum Sorcerer", "Time Pendulumgraph",
-            "Wavering Eyes", "Pendulum Call", "Tuning", "Secret Village of the Spellcasters",
-            "Mystical Space Typhoon", "Dark Hole", "Twin Twisters"
-        ]
-    }
-]
-
-def parse_card_list(uploaded_file):
+# Cache the Moxfield API results for 10 mins to avoid repeated calls
+@st.cache_data(ttl=600)
+def fetch_recent_moxfield_decks(format_name="standard", max_decks=20) -> List[dict]:
+    url = f"https://api.moxfield.com/v2/decks?format={format_name}&sort=recent&size={max_decks}"
+    headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        df = pd.read_csv(uploaded_file)
-        if 'Card' not in df.columns:
-            st.error("CSV must contain a column named 'Card'.")
-            return []
-        return df['Card'].dropna().tolist()
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        decks_data = response.json()
+        decks = []
+        for deck in decks_data.get("data", []):
+            decks.append({
+                "id": deck["id"],
+                "name": deck["name"],
+                "author": deck.get("author", {}).get("username", "unknown"),
+            })
+        return decks
     except Exception as e:
-        st.error(f"Error parsing file: {e}")
+        st.warning(f"Failed to fetch decks from Moxfield: {e}")
         return []
 
-def fetch_mtg_decklist(deck_id):
-    url = f"https://api.moxfield.com/v2/decks/{deck_id}"
+@st.cache_data(ttl=600)
+def fetch_decklist(deck_id: str) -> List[str]:
+    url = f"https://api.moxfield.com/v2/decks/{deck_id}/slots"
+    headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers)
-        if response.ok:
-            data = response.json()
-            mainboard = data.get('mainboard', {})
-            return list(mainboard.keys())
-    except:
-        pass
-    return []
-
-def find_mtg_builds(card_list, deck_type):
-    builds = []
-    collection_counter = Counter(card_list)
-    query = deck_type.lower()
-    url = f"https://api.moxfield.com/v2/decks/search?q={query}&format=commander&pageNumber=1&pageSize=10"
-
-    try:
-        headers = {'User-Agent': 'Mozilla/5.0'}
-        response = requests.get(url, headers=headers)
-
-        if not response.ok:
-            st.warning("Failed to contact Moxfield.")
-            return []
-
-        data = response.json()
-        decks = data.get('data', [])
-
-        for deck in decks:
-            deck_id = deck.get('publicId')
-            deck_name = deck.get('name', 'Unnamed Deck')
-            deck_cards = fetch_mtg_decklist(deck_id)
-
-            deck_counter = Counter(deck_cards)
-            match_count = sum(min(collection_counter[card], count) for card, count in deck_counter.items())
-            total_cards = sum(deck_counter.values())
-
-            if total_cards == 0:
-                continue
-
-            match_percent = (match_count / total_cards) * 100
-            if match_percent >= 50:
-                builds.append({
-                    "title": f"{deck_name} ({match_percent:.0f}% match)",
-                    "cards": deck_cards[:10],
-                    "notes": f"Deck from Moxfield. You own about {match_percent:.0f}% of the required cards."
-                })
-
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+        slots = response.json()
+        cards = []
+        for card_info in slots.values():
+            card_name = card_info.get("card", {}).get("name")
+            if card_name:
+                cards.append(card_name)
+        return cards
     except Exception as e:
-        st.error(f"Error matching MTG builds: {e}")
+        st.warning(f"Failed to fetch decklist for deck {deck_id}: {e}")
+        return []
 
-    return builds
+def load_card_list(file) -> set:
+    """Load user's card list from CSV, return set of card names (lowercase) for matching."""
+    try:
+        df = pd.read_csv(file)
+        cards = set(df['Card'].str.strip().str.lower())
+        return cards
+    except Exception as e:
+        st.error(f"Error reading file: {e}")
+        return set()
 
-def find_yugioh_builds(card_list, deck_type):
-    builds = []
-    collection_counter = Counter(card_list)
-
-    # Filter example decks by name matching deck_type (simple keyword filter)
-    filtered_decks = [deck for deck in YUGIOH_DECKS if deck_type.lower() in deck["name"].lower() or deck_type.lower() in " ".join(deck["name"].lower().split())]
-
-    if not filtered_decks:
-        # fallback to all decks if none matches deck_type text
-        filtered_decks = YUGIOH_DECKS
-
-    for deck in filtered_decks:
-        deck_counter = Counter(deck["cards"])
-        match_count = sum(min(collection_counter[card], count) for card, count in deck_counter.items())
-        total_cards = sum(deck_counter.values())
-        match_percent = (match_count / total_cards) * 100 if total_cards > 0 else 0
-
-        if match_percent >= 50:
-            builds.append({
-                "title": f"{deck['name']} ({match_percent:.0f}% match)",
-                "cards": deck["cards"][:10],
-                "notes": f"Static example deck. You own about {match_percent:.0f}% of the cards."
+def suggest_decks(user_cards: set, decks_info: List[dict]) -> List[dict]:
+    """Given user cards and decks info (with ids), fetch decklists and score matches."""
+    suggestions = []
+    for deck in decks_info:
+        deck_cards = fetch_decklist(deck["id"])
+        deck_cards_set = set(card.lower() for card in deck_cards)
+        matched = user_cards.intersection(deck_cards_set)
+        match_ratio = len(matched) / len(deck_cards_set) if deck_cards_set else 0
+        if match_ratio > 0:
+            suggestions.append({
+                "deck_name": deck["name"],
+                "author": deck["author"],
+                "match_count": len(matched),
+                "total_cards": len(deck_cards_set),
+                "match_ratio": match_ratio,
+                "missing_cards": deck_cards_set - matched,
+                "deck_url": f"https://www.moxfield.com/decks/{deck['id']}"
             })
 
-    return builds
+    # Sort by best match ratio and then number of matched cards
+    suggestions.sort(key=lambda x: (x['match_ratio'], x['match_count']), reverse=True)
+    return suggestions
 
-def find_builds(tcg, card_list, deck_type):
-    if tcg == "Magic: The Gathering":
-        return find_mtg_builds(card_list, deck_type)
-    elif tcg == "Yu-Gi-Oh!":
-        return find_yugioh_builds(card_list, deck_type)
-    else:
-        return []
+def main():
+    st.title("MTG Deck Builder Helper with Moxfield Scraper")
 
-# UI
-st.title("TCG Deck Builder Assistant (Magic & Yu-Gi-Oh!)")
+    game = st.selectbox("Select your Trading Card Game", ["Magic: The Gathering"])
+    if game != "Magic: The Gathering":
+        st.info("Currently only Magic: The Gathering with Moxfield scraping is supported.")
+        return
 
-tcg_choice = st.selectbox("Select Your TCG", TCG_OPTIONS)
-deck_type = st.selectbox("Select Deck Type", DECK_TYPES[tcg_choice])
+    format_map = {
+        "Standard": "standard",
+        "Modern": "modern",
+        "Pioneer": "pioneer",
+        "Historic": "historic",
+        "Legacy": "legacy",
+        "Vintage": "vintage",
+        "Commander": "commander",
+    }
+    selected_format = st.selectbox("Select Format", list(format_map.keys()))
 
-uploaded_file = st.file_uploader("Upload Your Card List (CSV with column 'Card')", type="csv")
+    uploaded_file = st.file_uploader("Upload your card list CSV file (must have 'Card' column)", type=["csv"])
+    
+    if uploaded_file:
+        user_cards = load_card_list(uploaded_file)
+        if not user_cards:
+            st.warning("No cards loaded from your file.")
+            return
+        st.write(f"Loaded {len(user_cards)} unique cards from your list.")
 
-if uploaded_file:
-    card_list = parse_card_list(uploaded_file)
-    if card_list:
-        st.success(f"{len(card_list)} cards loaded.")
-        if st.button("Generate Deck Builds"):
-            st.write(f"Matching builds for: {tcg_choice} - {deck_type}")
-            st.write("Your cards preview:", card_list[:5])
-            builds = find_builds(tcg_choice, card_list, deck_type)
-            if builds:
-                for build in builds:
-                    st.subheader(build["title"])
-                    st.write("**Cards (partial):**")
-                    st.write(", ".join(build["cards"]))
-                    st.write("**Notes:**")
-                    st.write(build["notes"])
-            else:
-                st.warning("No well-matched builds found. Try a different deck type or upload more cards.")
+        with st.spinner(f"Fetching recent {selected_format} decks from Moxfield..."):
+            decks_info = fetch_recent_moxfield_decks(format_map[selected_format], max_decks=20)
+
+        if not decks_info:
+            st.warning("No decks found or failed to fetch decks.")
+            return
+
+        st.write(f"Fetched {len(decks_info)} recent decks from Moxfield.")
+
+        with st.spinner("Comparing your cards with fetched decks..."):
+            suggestions = suggest_decks(user_cards, decks_info)
+
+        if not suggestions:
+            st.info("No matching decks found for your card list in recent decks.")
+        else:
+            st.subheader("Suggested Deck Builds from Moxfield:")
+            for suggestion in suggestions[:10]:  # Show top 10 matches
+                st.markdown(f"### [{suggestion['deck_name']}]({suggestion['deck_url']}) by {suggestion['author']}")
+                st.write(f"Matched cards: {suggestion['match_count']} / {suggestion['total_cards']} "
+                         f"({suggestion['match_ratio']*100:.1f}%)")
+                missing = suggestion['missing_cards']
+                if missing:
+                    st.write("Missing cards:", ", ".join(sorted(missing)))
+                else:
+                    st.write("You have all the cards for this deck!")
+
+if __name__ == "__main__":
+    main()
