@@ -1,5 +1,10 @@
 import streamlit as st
 import json
+import unicodedata
+
+# Normalize function for matching card names
+def normalize_card(card):
+    return unicodedata.normalize("NFKC", card.strip()).casefold()
 
 @st.cache_data
 def load_decks():
@@ -16,35 +21,33 @@ if uploaded_file is not None:
     owned_cards_raw = uploaded_file.getvalue().decode("utf-8").splitlines()
     owned_cards = [line.strip() for line in owned_cards_raw if line.strip()]
     
-    # Count owned cards occurrences
+    # Count normalized owned cards
     owned_counts = {}
     for card in owned_cards:
-        owned_counts[card] = owned_counts.get(card, 0) + 1
+        norm = normalize_card(card)
+        owned_counts[norm] = owned_counts.get(norm, 0) + 1
 
-    st.write(f"**You own {len(owned_cards)} cards total ({len(owned_counts)} unique).**")
-    st.write("### Deck Suggestions (including those with few matches):")
+    st.write(f"**You own {len(owned_cards)} cards total ({len(owned_counts)} unique normalized).**")
+    st.write("### Deck Suggestions:")
 
     for deck in decks:
         deck_cards = deck.get("cards", {})
-
         if isinstance(deck_cards, list):
             deck_cards = {card: 1 for card in deck_cards}
 
-        st.write(f"Deck '{deck['name']}' cards sample:", list(deck_cards.keys())[:10])
-        
+        # Merge in sideboard if present
+        sideboard = deck.get("sideboard", {})
+        if isinstance(sideboard, list):
+            sideboard = {card: 1 for card in sideboard}
+        deck_cards.update(sideboard)
+
+        # Match against normalized card names
         matching_cards_count = sum(
-            1 for card, req_count in deck_cards.items()
-            if owned_counts.get(card, 0) > 0
+            1 for card in deck_cards if owned_counts.get(normalize_card(card), 0) > 0
         )
-        st.write(f"Deck '{deck['name']}' matches {matching_cards_count} cards")
+        if matching_cards_count < 5:
+            continue
 
-        # ... rest of your code unchanged ...
-
-        
-        # Temporarily disable filtering to show all decks
-        # if matching_cards_count < 5:
-        #     continue
-        
         st.subheader(deck["name"])
         st.write(f"Author: {deck.get('author', 'Unknown')}")
         st.write(f"Format: {deck.get('format', 'Unknown')}")
@@ -54,7 +57,8 @@ if uploaded_file is not None:
         missing_list = []
 
         for card, req_count in deck_cards.items():
-            owned_qty = owned_counts.get(card, 0)
+            norm = normalize_card(card)
+            owned_qty = owned_counts.get(norm, 0)
             if owned_qty >= req_count:
                 owned_list.append(f"🟢 {card} x{req_count}")
             elif owned_qty > 0:
@@ -71,5 +75,12 @@ if uploaded_file is not None:
             st.markdown("**Cards missing:**")
             st.write(", ".join(missing_list))
 
+        # Optional: debug unmatched cards
+        unmatched = [
+            card for card in deck_cards
+            if normalize_card(card) not in owned_counts
+        ]
+        if unmatched:
+            st.caption(f"⚠️ {len(unmatched)} cards unmatched from this deck.")
 else:
     st.info("Upload your card list file to see deck suggestions.")
