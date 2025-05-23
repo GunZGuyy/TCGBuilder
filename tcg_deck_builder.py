@@ -26,16 +26,20 @@ if uploaded_file is not None:
 
     for deck in decks:
         deck_cards = deck.get("cards", {})
-        
-        # Debug: Show first few cards in deck and owned cards
+
+        if isinstance(deck_cards, list):
+            deck_cards = {card: 1 for card in deck_cards}
+
         st.write(f"Deck '{deck['name']}' cards sample:", list(deck_cards.keys())[:10])
-        st.write("Owned cards sample:", list(owned_counts.keys())[:10])
         
         matching_cards_count = sum(
             1 for card, req_count in deck_cards.items()
             if owned_counts.get(card, 0) > 0
         )
         st.write(f"Deck '{deck['name']}' matches {matching_cards_count} cards")
+
+        # ... rest of your code unchanged ...
+
         
         # Temporarily disable filtering to show all decks
         # if matching_cards_count < 5:
