@@ -19,33 +19,42 @@ if uploaded_file is not None:
     # Count owned cards occurrences
     owned_counts = {}
     for card in owned_cards:
-        clean_card = card.strip().casefold()  # .casefold() is better than .lower() for Unicode
-        owned_counts[clean_card] = owned_counts.get(clean_card, 0) + 1
+        owned_counts[card] = owned_counts.get(card, 0) + 1
+
+    st.write(f"**You own {len(owned_cards)} cards total ({len(owned_counts)} unique).**")
+    st.write("### Deck Suggestions (including those with few matches):")
 
     for deck in decks:
         deck_cards = deck.get("cards", {})
+
         if isinstance(deck_cards, list):
             deck_cards = {card: 1 for card in deck_cards}
 
+        st.write(f"Deck '{deck['name']}' cards sample:", list(deck_cards.keys())[:10])
+        
         matching_cards_count = sum(
-            1 for card in deck_cards
-            if owned_counts.get(card.strip().casefold(), 0) > 0
+            1 for card, req_count in deck_cards.items()
+            if owned_counts.get(card, 0) > 0
         )
-        if matching_cards_count < 5:
-            continue
+        st.write(f"Deck '{deck['name']}' matches {matching_cards_count} cards")
 
+        # ... rest of your code unchanged ...
+
+        
+        # Temporarily disable filtering to show all decks
+        # if matching_cards_count < 5:
+        #     continue
+        
         st.subheader(deck["name"])
-        st.write(f"Author: {deck.get('author','Unknown')}")
-        st.write(f"Format: {deck.get('format','Unknown')}")
-        st.write(f"Deck Type: {deck.get('deck_type','Unknown')}")
+        st.write(f"Author: {deck.get('author', 'Unknown')}")
+        st.write(f"Format: {deck.get('format', 'Unknown')}")
+        st.write(f"Deck Type: {deck.get('deck_type', 'Unknown')}")
 
         owned_list = []
         missing_list = []
 
         for card, req_count in deck_cards.items():
-            card_key = card.strip().casefold()
-            owned_qty = owned_counts.get(card_key, 0)
-
+            owned_qty = owned_counts.get(card, 0)
             if owned_qty >= req_count:
                 owned_list.append(f"🟢 {card} x{req_count}")
             elif owned_qty > 0:
