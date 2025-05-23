@@ -3,7 +3,7 @@ import json
 
 @st.cache_data
 def load_decks():
-    with open("moxfield_decks.json", "r", encoding="utf-8") as f:
+    with open("cached_mtgo_decks.json", "r", encoding="utf-8") as f:
         return json.load(f)
 
 decks = load_decks()
@@ -15,7 +15,7 @@ uploaded_file = st.file_uploader("Upload your card list (one card per line)", ty
 if uploaded_file is not None:
     owned_cards_raw = uploaded_file.getvalue().decode("utf-8").splitlines()
     owned_cards = [line.strip() for line in owned_cards_raw if line.strip()]
-    
+
     # Count owned cards occurrences
     owned_counts = {}
     for card in owned_cards:
@@ -25,7 +25,7 @@ if uploaded_file is not None:
     st.write("### Deck Suggestions:")
 
     for deck in decks:
-        deck_cards = deck.get("cards", {})  # Now a dict card->count
+        deck_cards = deck.get("cards", {})  # dict of card -> required count
 
         # Count how many required cards you have at least one copy of
         matching_cards_count = sum(
