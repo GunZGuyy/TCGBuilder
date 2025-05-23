@@ -1,6 +1,4 @@
-import json
-
-decks = [
+[
   {"name":"Mono Red Aggro","author":"ProPlayer1","format":"Standard","deck_type":"Aggro","cards":["Shock","Fervent Champion","Anax, Hardened in the Forge","Torbran, Thane of Red Fell","Light Up the Stage","Embercleave","Bonecrusher Giant","Rimrock Knight","Skewer the Critics","Claim the Firstborn"]},
   {"name":"Esper Control","author":"TopControlDeck","format":"Standard","deck_type":"Control","cards":["Teferi, Hero of Dominaria","Dovin's Veto","Absorb","Shark Typhoon","Narset, Parter of Veils","Omen of the Sea","Saw It Coming","Dream Trawler","Elspeth Conquers Death","Banishing Light"]},
   {"name":"Sultai Midrange","author":"MetaPlayer","format":"Standard","deck_type":"Midrange","cards":["Uro, Titan of Nature's Wrath","Murderous Rider","Nissa, Who Shakes the World","Mystical Dispute","Scavenging Ooze","Thoughtseize","Hydroid Krasis","Kroxa, Titan of Death's Hunger","Bloodchief's Thirst","Deathsprout"]},
