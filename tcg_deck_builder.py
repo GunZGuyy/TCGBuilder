@@ -51,7 +51,8 @@ def parse_card_list(uploaded_file):
 def fetch_mtg_decklist(deck_id):
     url = f"https://api.moxfield.com/v2/decks/{deck_id}"
     try:
-        response = requests.get(url)
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers)
         if response.ok:
             data = response.json()
             mainboard = data.get('mainboard', {})
@@ -67,7 +68,9 @@ def find_mtg_builds(card_list, deck_type):
     url = f"https://api.moxfield.com/v2/decks/search?q={query}&format=commander&pageNumber=1&pageSize=10"
 
     try:
-        response = requests.get(url)
+        headers = {'User-Agent': 'Mozilla/5.0'}
+        response = requests.get(url, headers=headers)
+
         if not response.ok:
             st.warning("Failed to contact Moxfield.")
             return []
