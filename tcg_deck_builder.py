@@ -2,15 +2,26 @@ import streamlit as st
 import pandas as pd
 import requests
 from typing import List
-from functools import lru_cache
 
-# Cache the Moxfield API results for 10 mins to avoid repeated calls
+# Create a session to persist headers and cookies
+session = requests.Session()
+session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                  "AppleWebKit/537.36 (KHTML, like Gecko) "
+                  "Chrome/114.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Referer": "https://www.moxfield.com/",
+    "Origin": "https://www.moxfield.com",
+})
+
 @st.cache_data(ttl=600)
 def fetch_recent_moxfield_decks(format_name="standard", max_decks=20) -> List[dict]:
     url = f"https://api.moxfield.com/v2/decks?format={format_name}&sort=recent&size={max_decks}"
-    headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        # Pre-visit homepage to get cookies
+        session.get("https://www.moxfield.com/", timeout=5)
+        
+        response = session.get(url, timeout=10)
         response.raise_for_status()
         decks_data = response.json()
         decks = []
@@ -28,9 +39,8 @@ def fetch_recent_moxfield_decks(format_name="standard", max_decks=20) -> List[di
 @st.cache_data(ttl=600)
 def fetch_decklist(deck_id: str) -> List[str]:
     url = f"https://api.moxfield.com/v2/decks/{deck_id}/slots"
-    headers = {'User-Agent': 'Mozilla/5.0'}
     try:
-        response = requests.get(url, headers=headers, timeout=10)
+        response = session.get(url, timeout=10)
         response.raise_for_status()
         slots = response.json()
         cards = []
@@ -44,7 +54,6 @@ def fetch_decklist(deck_id: str) -> List[str]:
         return []
 
 def load_card_list(file) -> set:
-    """Load user's card list from CSV, return set of card names (lowercase) for matching."""
     try:
         df = pd.read_csv(file)
         cards = set(df['Card'].str.strip().str.lower())
@@ -54,7 +63,6 @@ def load_card_list(file) -> set:
         return set()
 
 def suggest_decks(user_cards: set, decks_info: List[dict]) -> List[dict]:
-    """Given user cards and decks info (with ids), fetch decklists and score matches."""
     suggestions = []
     for deck in decks_info:
         deck_cards = fetch_decklist(deck["id"])
@@ -72,7 +80,6 @@ def suggest_decks(user_cards: set, decks_info: List[dict]) -> List[dict]:
                 "deck_url": f"https://www.moxfield.com/decks/{deck['id']}"
             })
 
-    # Sort by best match ratio and then number of matched cards
     suggestions.sort(key=lambda x: (x['match_ratio'], x['match_count']), reverse=True)
     return suggestions
 
@@ -96,7 +103,7 @@ def main():
     selected_format = st.selectbox("Select Format", list(format_map.keys()))
 
     uploaded_file = st.file_uploader("Upload your card list CSV file (must have 'Card' column)", type=["csv"])
-    
+
     if uploaded_file:
         user_cards = load_card_list(uploaded_file)
         if not user_cards:
@@ -120,7 +127,7 @@ def main():
             st.info("No matching decks found for your card list in recent decks.")
         else:
             st.subheader("Suggested Deck Builds from Moxfield:")
-            for suggestion in suggestions[:10]:  # Show top 10 matches
+            for suggestion in suggestions[:10]:
                 st.markdown(f"### [{suggestion['deck_name']}]({suggestion['deck_url']}) by {suggestion['author']}")
                 st.write(f"Matched cards: {suggestion['match_count']} / {suggestion['total_cards']} "
                          f"({suggestion['match_ratio']*100:.1f}%)")
