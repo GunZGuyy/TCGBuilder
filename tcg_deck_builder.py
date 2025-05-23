@@ -1,4 +1,3 @@
-
 import streamlit as st
 import pandas as pd
 import requests
@@ -13,7 +12,10 @@ DECK_TYPES = {
 def parse_card_list(uploaded_file):
     try:
         df = pd.read_csv(uploaded_file)
-        return df['Card'].tolist()
+        if 'Card' not in df.columns:
+            st.error("CSV must contain a column named 'Card'.")
+            return []
+        return df['Card'].dropna().tolist()
     except Exception as e:
         st.error(f"Error parsing file: {e}")
         return []
@@ -32,39 +34,37 @@ def find_mtg_builds(card_list, deck_type):
     builds = []
     query = deck_type.lower()
     url = f"https://api.moxfield.com/v2/decks/search?q={query}&format=commander&pageNumber=1&pageSize=5"
-    response = requests.get(url)
-    if response.ok:
-        data = response.json()
-        for deck in data.get('data', []):
-            deck_name = deck.get('name', 'Unnamed Deck')
-            builds.append({
-                "title": f"{deck_name} (MTG - {deck_type})",
-                "cards": [card for card in card_list[:10]],
-                "notes": f"Deck from Moxfield: {deck_name}"
-            })
+    try:
+        response = requests.get(url)
+        if response.ok:
+            data = response.json()
+            decks = data.get('data', [])
+            if not decks:
+                st.warning("No MTG decks found. Try a different deck type.")
+            for deck in decks:
+                deck_name = deck.get('name', 'Unnamed Deck')
+                builds.append({
+                    "title": f"{deck_name} (MTG - {deck_type})",
+                    "cards": [card for card in card_list[:10]],
+                    "notes": f"Deck from Moxfield: {deck_name}"
+                })
+    except Exception as e:
+        st.error(f"Error retrieving MTG builds: {e}")
     return builds
 
 def find_yugioh_builds(card_list, deck_type):
-    builds = []
-    url = f"https://db.ygoprodeck.com/api/v7/decktypes.php"
-    response = requests.get(url)
-    if response.ok:
-        types = response.json().get('data', [])
-        builds.append({
-            "title": f"Sample Yu-Gi-Oh! {deck_type} Deck",
-            "cards": card_list[:10],
-            "notes": f"Suggested from common Yu-Gi-Oh! deck types."
-        })
-    return builds
+    return [{
+        "title": f"Sample Yu-Gi-Oh! {deck_type} Deck",
+        "cards": card_list[:10],
+        "notes": "Suggested from common Yu-Gi-Oh! deck types."
+    }]
 
 def find_pokemon_builds(card_list, deck_type):
-    builds = []
-    builds.append({
+    return [{
         "title": f"Sample Pokémon {deck_type} Deck",
         "cards": card_list[:10],
         "notes": "Static example build for Pokémon TCG."
-    })
-    return builds
+    }]
 
 # UI
 st.title("TCG Deck Builder Assistant")
@@ -79,10 +79,16 @@ if uploaded_file:
     if card_list:
         st.success(f"{len(card_list)} cards loaded.")
         if st.button("Generate Deck Builds"):
+            st.write("Generating builds for:")
+            st.write(f"TCG: {tcg_choice}, Deck Type: {deck_type}")
+            st.write("Card list preview:", card_list[:5])
             builds = find_builds(tcg_choice, card_list, deck_type)
-            for build in builds:
-                st.subheader(build["title"])
-                st.write("**Cards:**")
-                st.write(", ".join(build["cards"]))
-                st.write("**Notes:**")
-                st.write(build["notes"])
+            if builds:
+                for build in builds:
+                    st.subheader(build["title"])
+                    st.write("**Cards:**")
+                    st.write(", ".join(build["cards"]))
+                    st.write("**Notes:**")
+                    st.write(build["notes"])
+            else:
+                st.warning("No builds were generated.")
