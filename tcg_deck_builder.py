@@ -35,13 +35,12 @@ if uploaded_file is not None:
         if isinstance(deck_cards, list):
             deck_cards = {card: 1 for card in deck_cards}
 
-        # Merge in sideboard if present
         sideboard = deck.get("sideboard", {})
         if isinstance(sideboard, list):
             sideboard = {card: 1 for card in sideboard}
         deck_cards.update(sideboard)
 
-        # Match against normalized card names
+        # Count how many cards match
         matching_cards_count = sum(
             1 for card in deck_cards if owned_counts.get(normalize_card(card), 0) > 0
         )
@@ -73,7 +72,6 @@ if uploaded_file is not None:
             st.markdown("**Cards missing:**")
             st.write(", ".join(missing_list))
 
-        # Optional: debug unmatched cards
         unmatched = [
             card for card in deck_cards
             if normalize_card(card) not in owned_counts
